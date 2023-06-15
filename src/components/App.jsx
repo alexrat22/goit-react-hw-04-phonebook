@@ -12,7 +12,7 @@ import Filter from './Filter/Filter';
 import shortid from 'shortid';
 
 export default function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useLocalStorage('contacts', []);
   const [filter, setFilter] = useState('');
 
   // componentDidUpdate(prevState) {
@@ -44,11 +44,11 @@ export default function App() {
     }
   };
 
-  handleChange = evt => {
+  const handleChange = evt => {
     this.setState({ filter: evt.currentTarget.value });
   };
 
-  getFilteredNames = () => {
+  const getFilteredNames = () => {
     const { contacts, filter } = this.state;
     const normalizedInputName = filter.toLowerCase();
     return contacts.filter(contact =>
@@ -56,7 +56,7 @@ export default function App() {
     );
   };
 
-  removeContact = contactId => {
+  const removeContact = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
@@ -70,10 +70,10 @@ export default function App() {
       </FormContainer>
       <ContactsContainer>
         <TitleContacts>Contacts</TitleContacts>
-        <Filter value={this.state.filter} onChange={this.handleChange} />
+        <Filter value={filter} onChange={handleChange} />
         <ContactsList
-          contacts={this.getFilteredNames()}
-          onRemoveBtnClick={this.removeContact}
+          contacts={getFilteredNames()}
+          onRemoveBtnClick={removeContact}
         />
       </ContactsContainer>
     </>
