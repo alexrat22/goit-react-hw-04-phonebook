@@ -1,5 +1,5 @@
 import { useState } from 'react';
-//import { useLocalStorage } from './hooks/useLocalStorage';
+import useLocalStorage from './hooks/useLocalStorage';
 import {
   FormContainer,
   ContactsContainer,
@@ -12,31 +12,28 @@ import Filter from './Filter/Filter';
 import shortid from 'shortid';
 
 export default function App() {
-  // const [contacts, setContacts] = useLocalStorage('ContactList', []);
-  const [filter] = useState('');
+  const [contacts, setContacts] = useLocalStorage('ContactList', []);
+  const [filter, setFilter] = useState('');
 
   const addContact = ({ name, number }) => {
     const newContact = { id: shortid.generate(), name, number };
 
     if (
-      this.state.contacts.find(
+      contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
       alert(`${name} is already in contacts`);
     } else {
-      this.setState(prevState => ({
-        contacts: [newContact, ...prevState.contacts],
-      }));
+      setContacts(contacts => [newContact, ...contacts]);
     }
   };
 
   const handleChange = evt => {
-    this.setState({ filter: evt.currentTarget.value });
+    setFilter(evt.currentTarget.value);
   };
 
   const getFilteredNames = () => {
-    const { contacts, filter } = this.state;
     const normalizedInputName = filter.toLowerCase();
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedInputName)
@@ -44,9 +41,9 @@ export default function App() {
   };
 
   const removeContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+    setContacts(contacts =>
+      contacts.filter(contact => contact.id !== contactId)
+    );
   };
 
   return (
