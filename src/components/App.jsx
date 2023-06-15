@@ -12,21 +12,8 @@ import Filter from './Filter/Filter';
 import shortid from 'shortid';
 
 export default function App() {
-  const [contacts, setContacts] = useLocalStorage('contacts', []);
-  const [filter, setFilter] = useState('');
-
-  // componentDidUpdate(prevState) {
-  //   if (this.state.contacts !== prevState.contacts) {
-  //     localStorage.setItem('ContactList', JSON.stringify(this.state.contacts));
-  //   }
-  // }
-
-  // componentDidMount() {
-  //   const parsedContacts = JSON.parse(localStorage.getItem('ContactList'));
-  //   if (parsedContacts) {
-  //     this.setState({ contacts: parsedContacts });
-  //   }
-  // }
+  // const [contacts, setContacts] = useLocalStorage('ContactList', []);
+  const [filter] = useState('');
 
   const addContact = ({ name, number }) => {
     const newContact = { id: shortid.generate(), name, number };
