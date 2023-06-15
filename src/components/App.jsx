@@ -33,7 +33,9 @@ class App extends Component {
     const newContact = { id: shortid.generate(), name, number };
 
     if (
-      this.state.contacts.find(contact => contact.name.toLowerCase() === name)
+      this.state.contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
     ) {
       alert(`${name} is already in contacts`);
     } else {
