@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import {
   FormContainer,
   ContactsContainer,
@@ -10,26 +11,24 @@ import ContactsList from './ContactsList/contactslist';
 import Filter from './Filter/Filter';
 import shortid from 'shortid';
 
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export default function App() {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  componentDidUpdate(prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('ContactList', JSON.stringify(this.state.contacts));
-    }
-  }
+  // componentDidUpdate(prevState) {
+  //   if (this.state.contacts !== prevState.contacts) {
+  //     localStorage.setItem('ContactList', JSON.stringify(this.state.contacts));
+  //   }
+  // }
 
-  componentDidMount() {
-    const parsedContacts = JSON.parse(localStorage.getItem('ContactList'));
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  // componentDidMount() {
+  //   const parsedContacts = JSON.parse(localStorage.getItem('ContactList'));
+  //   if (parsedContacts) {
+  //     this.setState({ contacts: parsedContacts });
+  //   }
+  // }
 
-  addContact = ({ name, number }) => {
+  const addContact = ({ name, number }) => {
     const newContact = { id: shortid.generate(), name, number };
 
     if (
@@ -63,24 +62,20 @@ class App extends Component {
     }));
   };
 
-  render() {
-    return (
-      <>
-        <FormContainer>
-          <Title>Phonebook</Title>
-          <ContactForm onSubmit={this.addContact} />
-        </FormContainer>
-        <ContactsContainer>
-          <TitleContacts>Contacts</TitleContacts>
-          <Filter value={this.state.filter} onChange={this.handleChange} />
-          <ContactsList
-            contacts={this.getFilteredNames()}
-            onRemoveBtnClick={this.removeContact}
-          />
-        </ContactsContainer>
-      </>
-    );
-  }
+  return (
+    <>
+      <FormContainer>
+        <Title>Phonebook</Title>
+        <ContactForm onSubmit={addContact} />
+      </FormContainer>
+      <ContactsContainer>
+        <TitleContacts>Contacts</TitleContacts>
+        <Filter value={this.state.filter} onChange={this.handleChange} />
+        <ContactsList
+          contacts={this.getFilteredNames()}
+          onRemoveBtnClick={this.removeContact}
+        />
+      </ContactsContainer>
+    </>
+  );
 }
-
-export default App;
